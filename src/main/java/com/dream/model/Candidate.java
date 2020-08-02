@@ -2,13 +2,17 @@ package com.dream.model;
 
 import java.util.Objects;
 
-public class Candidate {
+public class Candidate implements Model {
     private int id;
     private String name;
 
     public Candidate(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Candidate of(int id, String name) {
+        return new Candidate(id, name);
     }
 
     public int getId() {
@@ -39,5 +43,10 @@ public class Candidate {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public String getTableName() {
+        return "candidate";
     }
 }

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.dream.store.Store" %>
 <%@ page import="com.dream.model.Post" %>
+<%@ page import="com.dream.store.Store" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,7 +25,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "");
     if (id != null) {
-        post = Store.instOf().findPostById(
+        post = Store.defaultStore().findPostById(
                 Integer.parseInt(id)
         );
     }

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.dream.store.Store" %>
-<%@ page import="com.dream.model.Post" %>
 <%@ page import="com.dream.model.Candidate" %>
+<%@ page import="com.dream.store.Store" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,7 +25,7 @@
     String id = request.getParameter("id");
     Candidate cand = new Candidate(0, "");
     if (id != null) {
-        cand = Store.instOf().findCandidateById(
+        cand = Store.defaultStore().findCandidateById(
                 Integer.parseInt(id)
         );
     }

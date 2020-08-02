@@ -2,13 +2,17 @@ package com.dream.model;
 
 import java.util.Objects;
 
-public class Post {
+public class Post implements Model {
     private int id;
     private String name;
 
     public Post(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Post of(int id, String name) {
+        return new Post(id, name);
     }
 
     public int getId() {
@@ -38,5 +42,10 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String getTableName() {
+        return "post";
     }
 }

@@ -1,6 +1,7 @@
 package com.dream.servlet;
 
 import com.dream.model.Candidate;
+import com.dream.store.MemStore;
 import com.dream.store.Store;
 
 import javax.servlet.ServletException;
@@ -13,14 +14,14 @@ public class CandidateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", Store.instOf().findAllCandidates());
+        req.setAttribute("candidates", Store.defaultStore().findAllCandidates());
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        Store.instOf().save(
+        Store.defaultStore().save(
                 new Candidate(
                         Integer.parseInt(req.getParameter("id")),
                         req.getParameter("name")
