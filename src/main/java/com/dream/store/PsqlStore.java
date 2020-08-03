@@ -23,13 +23,9 @@ public class PsqlStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
 
     private PsqlStore() {
-
-        //Path p = Paths.get(".");
-        //System.out.println(p.toAbsolutePath().toString());
-
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("C:/Projects/job4j_dreamjob/db.properties")
+                new FileReader("dreamjob/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {

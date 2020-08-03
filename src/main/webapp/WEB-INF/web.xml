@@ -37,4 +37,22 @@
     <url-pattern>/index.do</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>CandidateEditServlet</servlet-name>
+    <servlet-class>com.dream.servlet.CandidateEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CandidateEditServlet</servlet-name>
+    <url-pattern>/candidate.edit</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PostEditServlet</servlet-name>
+    <servlet-class>com.dream.servlet.PostEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PostEditServlet</servlet-name>
+    <url-pattern>/post.edit</url-pattern>
+  </servlet-mapping>
+
 </web-app>

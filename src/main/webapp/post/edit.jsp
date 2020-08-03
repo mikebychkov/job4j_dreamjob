@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.dream.model.Post" %>
 <%@ page import="com.dream.store.Store" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,30 +22,18 @@
     <title>Работа мечты</title>
 </head>
 <body>
-<%
-    String id = request.getParameter("id");
-    Post post = new Post(0, "");
-    if (id != null) {
-        post = Store.defaultStore().findPostById(
-                Integer.parseInt(id)
-        );
-    }
-%>
 <div class="container pt-3">
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                Новая вакансия.
-                <% } else { %>
-                Редактирование вакансии.
-                <% } %>
+                <c:if test="${post.id == 0}">Новая вакансия.</c:if>
+                <c:if test="${post.id != 0}">Редактирование вакансии.</c:if>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/posts.do?id=${post.id}" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name"  value="<%=post.getName()%>">
+                        <input type="text" class="form-control" name="name"  value="${post.name}">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
