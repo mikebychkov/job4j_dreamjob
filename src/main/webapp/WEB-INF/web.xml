@@ -55,4 +55,22 @@
     <url-pattern>/post.edit</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>com.dream.servlet.upload.UploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/upload</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>com.dream.servlet.upload.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download</url-pattern>
+  </servlet-mapping>
+
 </web-app>
