@@ -75,7 +75,7 @@
 
   <servlet>
     <servlet-name>PhotoUpload</servlet-name>
-    <servlet-class>com.dream.servlet.PhotoUpload</servlet-class>
+    <servlet-class>com.dream.servlet.PhotoUpload2</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>PhotoUpload</servlet-name>
@@ -89,6 +89,15 @@
   <servlet-mapping>
     <servlet-name>PhotoDownload</servlet-name>
     <url-pattern>/photo.download</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>com.dream.servlet.AuthServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/auth.do</url-pattern>
   </servlet-mapping>
 
 </web-app>
