@@ -45,6 +45,8 @@ public class ImgStore {
                         out.write(item.getInputStream().readAllBytes());
                         rsl.add(fileName);
                     }
+                } else {
+                    System.out.println(item.getFieldName() + " : " + item.getString());
                 }
             }
         } catch (Exception e) {

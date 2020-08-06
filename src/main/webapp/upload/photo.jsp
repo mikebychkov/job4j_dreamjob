@@ -18,6 +18,8 @@
 
     <form action="<c:url value='/photo.upload?id=${candidate.id}'/>" method="post" enctype="multipart/form-data">
 
+        <input type="hidden" class="form-control" name="abra" value="cadabra">
+
         <img src="<c:url value='/photo.download?name=${candidate.photo}'/>"/><br/>
 
         <a href="<c:url value='/photo.download?name=${candidate.photo}'/>">Download</a><br/>
