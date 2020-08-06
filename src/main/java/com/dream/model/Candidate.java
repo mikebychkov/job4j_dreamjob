@@ -6,6 +6,8 @@ public class Candidate implements Model {
     private int id;
     private String name;
 
+    private String photo;
+
     public Candidate(int id, String name) {
         this.id = id;
         this.name = name;
@@ -48,5 +50,13 @@ public class Candidate implements Model {
     @Override
     public String getTableName() {
         return "candidate";
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

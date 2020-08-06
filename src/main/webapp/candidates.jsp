@@ -44,7 +44,13 @@
                             <a href='<c:url value="/candidate.edit?id=${can.id}"/>'>
                                 <i class="fa fa-edit mr-3"></i>
                             </a>
+                            <a href='<c:url value="/photo.upload?id=${can.id}"/>'>
+                                <i class="fa fa-image mr-3"></i>
+                            </a>
                             <c:out value="${can.name}"/>
+                        </td>
+                        <td>
+                            <img src="<c:url value='/photo.download?name=${can.photo}'/>" width="100px" height="100px"/>
                         </td>
                     </tr>
                     </c:forEach>

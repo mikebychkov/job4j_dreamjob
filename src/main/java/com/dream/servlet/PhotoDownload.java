@@ -1,4 +1,4 @@
-package com.dream.servlet.upload;
+package com.dream.servlet;
 
 import com.dream.store.ImgStore;
 
@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class DownloadServlet extends HttpServlet {
+public class PhotoDownload extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

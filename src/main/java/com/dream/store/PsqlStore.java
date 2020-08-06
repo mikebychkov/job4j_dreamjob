@@ -23,6 +23,9 @@ public class PsqlStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
 
     private PsqlStore() {
+
+        //System.out.println(Paths.get(".").toAbsolutePath().toString());
+
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
                 new FileReader("dreamjob/db.properties")
@@ -60,12 +63,17 @@ public class PsqlStore implements Store {
 
     @Override
     public Collection<Candidate> findAllCandidates() {
-        return findAllModels(new Candidate(0, ""));
+        Collection<Candidate> coll = findAllModels(new Candidate(0, ""));
+        for (Candidate cand : coll) {
+            String file = findPhoto(cand);
+            cand.setPhoto(file);
+        }
+        return coll;
     }
 
     private <T extends Model> Collection<T> findAllModels(T model) {
         List<T> models = new ArrayList<>();
-        String query = String.format("SELECT * FROM %s", model.getTableName());
+        String query = String.format("SELECT id, name FROM %s", model.getTableName());
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(query)
         ) {
@@ -89,6 +97,29 @@ public class PsqlStore implements Store {
     @Override
     public void save(Candidate candidate) {
         saveModel(candidate);
+        savePhoto(candidate, candidate.getPhoto());
+    }
+
+    public void savePhoto(Candidate cand, String file) {
+        if (file == null) {
+            return;
+        }
+        String candPhoto = findPhoto(cand);
+        String query;
+        if (candPhoto == null) {
+            query = "INSERT INTO photo(name, owner_id) VALUES (?, ?)";
+        } else {
+            query = "UPDATE photo SET name = (?) WHERE owner_id = (?)";
+        }
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(query)
+        ) {
+            ps.setString(1, file);
+            ps.setInt(2, cand.getId());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveModel(Model model) {
@@ -137,7 +168,28 @@ public class PsqlStore implements Store {
 
     @Override
     public Candidate findCandidateById(int id) {
-        return findModelById(id, new Candidate(0, ""));
+        Candidate cand = findModelById(id, new Candidate(0, ""));
+        if (cand != null) {
+            cand.setPhoto(findPhoto(cand));
+        }
+        return cand;
+    }
+
+    public String findPhoto(Candidate cand) {
+        String query = "SELECT name FROM photo WHERE owner_id = (?)";
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(query)
+        ) {
+            ps.setInt(1, cand.getId());
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return it.getString("name");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private <T extends Model> T findModelById(int id, T model) {

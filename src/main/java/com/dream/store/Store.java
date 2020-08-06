@@ -22,4 +22,8 @@ public interface Store {
     Post findPostById(int id);
 
     Candidate findCandidateById(int id);
+
+    void savePhoto(Candidate candidate, String file);
+
+    String findPhoto(Candidate candidate);
 }

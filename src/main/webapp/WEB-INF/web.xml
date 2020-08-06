@@ -73,4 +73,22 @@
     <url-pattern>/download</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>PhotoUpload</servlet-name>
+    <servlet-class>com.dream.servlet.PhotoUpload</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PhotoUpload</servlet-name>
+    <url-pattern>/photo.upload</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PhotoDownload</servlet-name>
+    <servlet-class>com.dream.servlet.PhotoDownload</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PhotoDownload</servlet-name>
+    <url-pattern>/photo.download</url-pattern>
+  </servlet-mapping>
+
 </web-app>

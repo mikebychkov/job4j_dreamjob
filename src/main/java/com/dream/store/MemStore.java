@@ -60,4 +60,14 @@ public class MemStore implements Store {
     public Candidate findCandidateById(int id) {
         return candidates.get(id);
     }
+
+    @Override
+    public void savePhoto(Candidate candidate, String file) {
+
+    }
+
+    @Override
+    public String findPhoto(Candidate candidate) {
+        return null;
+    }
 }
