@@ -6,17 +6,15 @@ import com.dream.model.Post;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
+import java.util.*;
 
+import com.dream.model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 public class PsqlStore implements Store {
 
@@ -58,12 +56,12 @@ public class PsqlStore implements Store {
 
     @Override
     public Collection<Post> findAllPosts() {
-        return findAllModels(new Post(0, ""));
+        return ModelStore.findAllModels(new Post(0, ""), pool);
     }
 
     @Override
     public Collection<Candidate> findAllCandidates() {
-        Collection<Candidate> coll = findAllModels(new Candidate(0, ""));
+        Collection<Candidate> coll = ModelStore.findAllModels(new Candidate(0, ""), pool);
         for (Candidate cand : coll) {
             String file = findPhoto(cand);
             cand.setPhoto(file);
@@ -71,35 +69,32 @@ public class PsqlStore implements Store {
         return coll;
     }
 
-    private <T extends Model> Collection<T> findAllModels(T model) {
-        List<T> models = new ArrayList<>();
-        String query = String.format("SELECT id, name FROM %s", model.getTableName());
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(query)
-        ) {
-            try (ResultSet it = ps.executeQuery()) {
-                while (it.next()) {
-                    Model m = model.of(it.getInt("id"), it.getString("name"));
-                    models.add((T) m);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return models;
-    }
-
     @Override
     public void save(Post post) {
-        saveModel(post);
+        ModelStore.saveModel(post, pool);
     }
 
     @Override
     public void save(Candidate candidate) {
-        saveModel(candidate);
+        ModelStore.saveModel(candidate, pool);
         savePhoto(candidate, candidate.getPhoto());
     }
 
+    @Override
+    public Post findPostById(int id) {
+        return ModelStore.findModelById(id, new Post(0, ""), pool);
+    }
+
+    @Override
+    public Candidate findCandidateById(int id) {
+        Candidate cand = ModelStore.findModelById(id, new Candidate(0, ""), pool);
+        if (cand != null) {
+            cand.setPhoto(findPhoto(cand));
+        }
+        return cand;
+    }
+
+    @Override
     public void savePhoto(Candidate cand, String file) {
         if (file == null) {
             return;
@@ -122,59 +117,7 @@ public class PsqlStore implements Store {
         }
     }
 
-    public void saveModel(Model model) {
-        if (model.getId() == 0) {
-            create(model);
-        } else {
-            update(model);
-        }
-    }
-
-    private <T extends Model> T create(T model) {
-        String query = String.format("INSERT INTO %s(name) VALUES (?)", model.getTableName());
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
-            ps.setString(1, model.getName());
-            ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    model.setId(id.getInt(1));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return (T) model;
-    }
-
-    private void update(Model model) {
-        String query = String.format("UPDATE %s SET name = (?) WHERE id = (?)", model.getTableName());
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(query)
-        ) {
-            ps.setString(1, model.getName());
-            ps.setInt(2, model.getId());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
-    public Post findPostById(int id) {
-        return findModelById(id, new Post(0, ""));
-    }
-
-    @Override
-    public Candidate findCandidateById(int id) {
-        Candidate cand = findModelById(id, new Candidate(0, ""));
-        if (cand != null) {
-            cand.setPhoto(findPhoto(cand));
-        }
-        return cand;
-    }
-
     public String findPhoto(Candidate cand) {
         String query = "SELECT name FROM photo WHERE owner_id = (?)";
         try (Connection cn = pool.getConnection();
@@ -192,23 +135,32 @@ public class PsqlStore implements Store {
         return null;
     }
 
-    private <T extends Model> T findModelById(int id, T model) {
-        String query = String.format("SELECT id, name FROM %s WHERE id = (?)", model.getTableName());
+    @Override
+    public void saveUser(User user) {
+        Map<String, String> fields = new HashMap<>();
+        fields.put("email", user.getEmail());
+        fields.put("password", user.getPassword());
+        ModelStore.saveModelWithFields(user, fields, pool);
+    }
+
+    @Override
+    public User findUser(String email) {
+        String query = "SELECT name FROM user WHERE email = (?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)
         ) {
-            ps.setInt(1, id);
+            ps.setString(1, email);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    model.setId(id);
-                    model.setName(it.getString("name"));
-                } else {
-                    model = null;
+                    User rsl = new User(it.getInt("id"), it.getString("name"));
+                    rsl.setEmail(it.getString("email"));
+                    rsl.setPassword(it.getString("password"));
+                    return rsl;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return model;
+        return null;
     }
 }

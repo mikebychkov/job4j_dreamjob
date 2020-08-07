@@ -2,11 +2,24 @@ package com.dream.model;
 
 import java.util.Objects;
 
-public class User {
+public class User implements Model {
     private int id = 0;
     private String name = "Not registered";
     private String email = "";
     private String password = "";
+
+    public User() {
+    }
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public Model of(int id, String name) {
+        return new User(id, name);
+    }
 
     public int getId() {
         return id;
@@ -22,6 +35,11 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getTableName() {
+        return "user";
     }
 
     public String getEmail() {

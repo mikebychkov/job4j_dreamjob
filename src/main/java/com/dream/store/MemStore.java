@@ -2,6 +2,7 @@ package com.dream.store;
 
 import com.dream.model.Post;
 import com.dream.model.Candidate;
+import com.dream.model.User;
 
 import java.util.Collection;
 import java.util.Map;
@@ -68,6 +69,16 @@ public class MemStore implements Store {
 
     @Override
     public String findPhoto(Candidate candidate) {
+        return null;
+    }
+
+    @Override
+    public void saveUser(User user) {
+
+    }
+
+    @Override
+    public User findUser(String email) {
         return null;
     }
 }

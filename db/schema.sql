@@ -13,3 +13,10 @@ CREATE TABLE photo (
    name TEXT,
    owner_id int
 );
+
+CREATE TABLE user (
+   id SERIAL PRIMARY KEY,
+   name TEXT,
+   email TEXT,
+   password TEXT
+);
