@@ -6,11 +6,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class ModelStore {
 
-    public static void saveModel(Model model, BasicDataSource pool) {
+    public static void saveModel(Model model, BasicDataSource pool) throws SQLException {
         Map<String, String> stringFields = new HashMap<>();
         if (model.getId() == 0) {
             ModelStore.create(model, stringFields, pool);
@@ -19,7 +20,7 @@ public class ModelStore {
         }
     }
 
-    public static void saveModelWithFields(Model model, Map<String, String> stringFields, BasicDataSource pool) {
+    public static void saveModelWithFields(Model model, Map<String, String> stringFields, BasicDataSource pool) throws SQLException {
         if (model.getId() == 0) {
             ModelStore.create(model, stringFields, pool);
         } else {
@@ -27,7 +28,7 @@ public class ModelStore {
         }
     }
 
-    public static <T extends Model> T create(T model, Map<String, String> stringFields, BasicDataSource pool) {
+    public static <T extends Model> T create(T model, Map<String, String> stringFields, BasicDataSource pool) throws SQLException {
         TreeMap<String, String> sortedFields = new TreeMap<>(stringFields);
         StringJoiner fields = new StringJoiner(",");
         StringJoiner params = new StringJoiner(",");
@@ -39,6 +40,8 @@ public class ModelStore {
         }
         //
         String query = String.format("INSERT INTO %s(%s) VALUES (%s)", model.getTableName(), fields.toString(), params.toString());
+        System.out.println(sortedFields);
+        System.out.println(query);
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
@@ -53,13 +56,16 @@ public class ModelStore {
                     model.setId(id.getInt(1));
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException(e);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return (T) model;
     }
 
-    public static void update(Model model, Map<String, String> stringFields, BasicDataSource pool) {
+    public static void update(Model model, Map<String, String> stringFields, BasicDataSource pool) throws SQLException {
         TreeMap<String, String> sortedFields = new TreeMap<>(stringFields);
         StringJoiner fieldsWithParams = new StringJoiner(",");
         fieldsWithParams.add("name = (?)");
@@ -78,6 +84,9 @@ public class ModelStore {
             }
             ps.setInt(paramIndex, model.getId());
             ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException(e);
         } catch (Exception e) {
             e.printStackTrace();
         }

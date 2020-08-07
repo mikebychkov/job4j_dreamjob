@@ -42,13 +42,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate.edit">Добавить кандидата</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-link">
                 <c:out value="${user.name} | "/>
                 <c:if test="${user.id == 0}">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/auth.do?log=1">Войти</a>
+                    <a href="<%=request.getContextPath()%>/auth.do?log=1">Войти</a>
                 </c:if>
                 <c:if test="${user.id != 0}">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/auth.do?log=0">Выйти</a>
+                    <a href="<%=request.getContextPath()%>/auth.do?log=0">Выйти</a>
                 </c:if>
             </li>
         </ul>

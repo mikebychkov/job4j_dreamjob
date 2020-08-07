@@ -39,7 +39,7 @@ public class User implements Model {
 
     @Override
     public String getTableName() {
-        return "user";
+        return "users";
     }
 
     public String getEmail() {

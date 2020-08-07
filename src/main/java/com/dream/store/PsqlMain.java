@@ -2,9 +2,11 @@ package com.dream.store;
 
 import com.dream.model.Post;
 
+import java.sql.SQLException;
+
 public class PsqlMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Store store = PsqlStore.instOf();
         store.save(new Post(0, "Java Job"));
         for (Post post : store.findAllPosts()) {

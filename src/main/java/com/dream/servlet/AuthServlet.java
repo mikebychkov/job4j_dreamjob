@@ -25,17 +25,25 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if ("root@local".equals(email) && "root".equals(password)) {
+        User user = Store.defaultStore().findUser(email);
+        if (user != null && password.equals(user.getPassword())) {
+        /*if ("root@local".equals(email) && "root".equals(password)) {
+            User user = getAdmin();*/
             HttpSession sc = req.getSession();
-            User admin = new User();
-            admin.setId(1);
-            admin.setName("Admin");
-            admin.setEmail(email);
-            sc.setAttribute("user", admin);
+            sc.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/posts.do");
         } else {
             req.setAttribute("error", "Неверный email или пароль");
             req.getRequestDispatcher("login.jsp").forward(req, resp);
         }
+    }
+
+    private User getAdmin() {
+        User admin = new User();
+        admin.setId(1);
+        admin.setName("Admin");
+        admin.setEmail("root@local");
+        admin.setPassword("root");
+        return admin;
     }
 }

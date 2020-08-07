@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CandidateServlet extends HttpServlet {
 
@@ -22,12 +23,16 @@ public class CandidateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        Store.defaultStore().save(
-                new Candidate(
-                        Integer.parseInt(req.getParameter("id")),
-                        req.getParameter("name")
-                )
-        );
+        try {
+            Store.defaultStore().save(
+                    new Candidate(
+                            Integer.parseInt(req.getParameter("id")),
+                            req.getParameter("name")
+                    )
+            );
+        } catch (SQLException e) {
+
+        }
         resp.sendRedirect(req.getContextPath() + "/candidates.do");
     }
 }

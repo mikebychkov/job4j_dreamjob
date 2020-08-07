@@ -4,6 +4,7 @@ import com.dream.model.Candidate;
 import com.dream.model.Post;
 import com.dream.model.User;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface Store {
@@ -16,9 +17,9 @@ public interface Store {
 
     Collection<Candidate> findAllCandidates();
 
-    void save(Post post);
+    void save(Post post) throws SQLException;
 
-    void save(Candidate candidate);
+    void save(Candidate candidate) throws SQLException;
 
     Post findPostById(int id);
 
@@ -28,7 +29,7 @@ public interface Store {
 
     String findPhoto(Candidate candidate);
 
-    void saveUser(User user);
+    void saveUser(User user) throws SQLException;
 
     User findUser(String email);
 }

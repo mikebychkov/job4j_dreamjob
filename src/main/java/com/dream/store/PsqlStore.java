@@ -6,6 +6,7 @@ import com.dream.model.Post;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 
 import com.dream.model.User;
@@ -70,12 +71,12 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void save(Post post) {
+    public void save(Post post) throws SQLException {
         ModelStore.saveModel(post, pool);
     }
 
     @Override
-    public void save(Candidate candidate) {
+    public void save(Candidate candidate) throws SQLException {
         ModelStore.saveModel(candidate, pool);
         savePhoto(candidate, candidate.getPhoto());
     }
@@ -136,7 +137,7 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user) throws SQLException {
         Map<String, String> fields = new HashMap<>();
         fields.put("email", user.getEmail());
         fields.put("password", user.getPassword());
@@ -145,7 +146,7 @@ public class PsqlStore implements Store {
 
     @Override
     public User findUser(String email) {
-        String query = "SELECT name FROM user WHERE email = (?)";
+        String query = "SELECT id, name, email, password FROM users WHERE email = (?)";
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query)
         ) {
