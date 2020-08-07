@@ -40,8 +40,6 @@ public class ModelStore {
         }
         //
         String query = String.format("INSERT INTO %s(%s) VALUES (%s)", model.getTableName(), fields.toString(), params.toString());
-        System.out.println(sortedFields);
-        System.out.println(query);
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
