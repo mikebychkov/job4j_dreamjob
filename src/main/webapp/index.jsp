@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.dream.store.MemStore" %>
 <%@ page import="com.dream.model.Post" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +26,9 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
             </li>
             <li class="nav-item">
@@ -40,7 +44,13 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/upload">Загрузка файлов</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <c:out value="${user.name} | "/>
+                <c:if test="${user.id == 0}">
+                    <a class="nav-link" href="<%=request.getContextPath()%>/auth.do?log=1">Войти</a>
+                </c:if>
+                <c:if test="${user.id != 0}">
+                    <a class="nav-link" href="<%=request.getContextPath()%>/auth.do?log=0">Выйти</a>
+                </c:if>
             </li>
         </ul>
     </div>
