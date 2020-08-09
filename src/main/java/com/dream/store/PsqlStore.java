@@ -138,10 +138,23 @@ public class PsqlStore implements Store {
 
     @Override
     public void saveUser(User user) throws SQLException {
-        Map<String, String> fields = new HashMap<>();
-        fields.put("email", user.getEmail());
-        fields.put("password", user.getPassword());
-        ModelStore.saveModelWithFields(user, fields, pool);
+        User rslUser = findUser(user.getEmail());
+        String query;
+        if (rslUser == null) {
+            query = "INSERT INTO users(name, password, email) VALUES (?, ?, ?)";
+        } else {
+            query = "UPDATE users SET name = (?), password = (?) WHERE email = (?)";
+        }
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(query)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
