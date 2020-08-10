@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <h2>Horizontal form</h2>
+        </div>
+    </div>
+    <form class="form-horizontal" action="/action_page.php">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="surname">Surname:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="surname" placeholder="Surname" name="surname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="sexM">Sex:</label>
+            <div class="col-sm-10">
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="sexM" checked>Male
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="sexF">Female
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Description:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="description" placeholder="Description" name="description"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="Submit" class="btn btn-default">
+            </div>
+        </div>
+    </form>
+    <div class="container">
+        <h2>Bordered Table</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Sex</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>Male</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
