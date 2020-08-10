@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            let fields = [];
+            fields.push("name");
+            fields.push("surname");
+            fields.push("sexM");
+            fields.push("sexF");
+            fields.push("description");
+            for (let i = 0; i < fields.length; i++) {
+                let val = $('#' + fields[i]).val();
+                if (val === '') {
+                    alert('Field: ' + fields[i] + ' is empty!');
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
 
@@ -48,7 +66,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" value="Submit" class="btn btn-default">
+<!--                <input type="submit" value="Submit" class="btn btn-default">-->
+                <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
             </div>
         </div>
     </form>
