@@ -24,6 +24,32 @@
             }
             return true;
         }
+        function getSex() {
+            let sex = document.getElementsByName('sex');
+            for (let i = 0; i < sex.length; i++) {
+                if (sex[i].checked) {
+                    return sex[i].value;
+                    break;
+                }
+            }
+            return "";
+        }
+        function addRow() {
+            //получаем значение поля
+            var name = $('#name').val();
+            var surname = $('#surname').val();
+            var sex = getSex();
+            var description = $('#description').val();
+
+            //получаем ссылку на последний элемент в таблице.
+            //и после него добавляем html
+            $('#table tr:last').after('<tr>' +
+                '<td>' + name + '</td>' +
+                '<td>' + surname + '</td>' +
+                '<td>' + sex + '</td>' +
+                '<td>' + description + '</td>' +
+                '</tr>');
+        }
     </script>
 </head>
 <body>
@@ -51,10 +77,10 @@
             <label class="control-label col-sm-2" for="sexM">Sex:</label>
             <div class="col-sm-10">
                 <label class="radio-inline">
-                    <input type="radio" name="sex" id="sexM" checked>Male
+                    <input type="radio" name="sex" id="sexM" value="Male" checked>Male
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="sex" id="sexF">Female
+                    <input type="radio" name="sex" id="sexF" value="Female">Female
                 </label>
             </div>
         </div>
@@ -67,13 +93,13 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
 <!--                <input type="submit" value="Submit" class="btn btn-default">-->
-                <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+                <button type="button" class="btn btn-default" onclick="if (validate()) {addRow()}">Submit</button>
             </div>
         </div>
     </form>
     <div class="container">
         <h2>Bordered Table</h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="table">
             <thead>
             <tr>
                 <th>Name</th>
