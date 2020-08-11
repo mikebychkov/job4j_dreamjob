@@ -143,4 +143,13 @@
     <url-pattern>/greet.json</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>CityList</servlet-name>
+    <servlet-class>com.dream.servlet.CityList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CityList</servlet-name>
+    <url-pattern>/city.list</url-pattern>
+  </servlet-mapping>
+
 </web-app>

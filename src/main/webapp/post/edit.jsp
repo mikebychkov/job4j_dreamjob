@@ -12,12 +12,46 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<%--    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"--%>
+<%--            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>--%>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script>
+        function validate() {
+            let fields = [];
+            fields.push("name");
+            for (let i = 0; i < fields.length; i++) {
+                let val = $('#' + fields[i]).val();
+                if (val === '') {
+                    alert('Field: ' + fields[i] + ' is empty!');
+                    return false;
+                }
+            }
+            return true;
+        }
+        function loadCityList() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/dreamjob/city.list',
+                dataType: 'json'
+            }).done(function(data) {
+                let opts = "";
+                for (let k in data) {
+                    opts += "<option value=\"" + k + "\">" + data[k] + "</option>";
+                }
+                $('#city').html(opts);
+            }).fail(function(err) {
+                alert("Error loading city list (" + err.status + ")");
+            });
+        }
+        loadCityList();
+    </script>
 
     <title>Работа мечты</title>
 </head>
@@ -32,10 +66,15 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/posts.do?id=${post.id}" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name"  value="${post.name}">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name" value="${post.name}">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-group">
+                        <label for="city">Город</label>
+                        <select name="city" id="city" class="form-control">
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>
             </div>
         </div>
