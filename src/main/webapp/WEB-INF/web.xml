@@ -134,4 +134,13 @@
     <url-pattern>/greet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>GreetingServletJSON</servlet-name>
+    <servlet-class>com.dream.servlet.ajax.GreetingServletJSON</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GreetingServletJSON</servlet-name>
+    <url-pattern>/greet.json</url-pattern>
+  </servlet-mapping>
+
 </web-app>
